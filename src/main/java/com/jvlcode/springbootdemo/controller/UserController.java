@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
 
     @GetMapping
-    public List<User> getUsers() {
+    /*public List<User> getUsers() {
         return Arrays.asList(
                 new User(1L, "madhan", "madd@gmail.com"),
                 new User(2L, "robin", "rob@gmail.com"),
                 new User(23L, "sanjay", "rob@gasdfasfmail.com"));
+    }*/
+    public String getUsers() {
+        return "Poda pottasdasa";
     }
 }
