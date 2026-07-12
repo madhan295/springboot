@@ -25,4 +25,9 @@ public class UserController {
     public UserEntity createUser(@RequestBody UserEntity user) {
         return userRepository.save(user);
     }
+
+    @GetMapping("/{id}")
+    public Optional<UserEntity> getUserById(@PathVariable Long id) {
+       return userRepository.findById(id);
+    }
 }
