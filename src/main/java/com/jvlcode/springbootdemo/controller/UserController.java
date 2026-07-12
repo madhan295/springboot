@@ -3,6 +3,7 @@ package com.jvlcode.springbootdemo.controller;
 import java.util.*;
 
 import com.jvlcode.springbootdemo.entity.UserEntity;
+import com.jvlcode.springbootdemo.exception.ResourceNotFoundException;
 import com.jvlcode.springbootdemo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public Optional<UserEntity> getUserById(@PathVariable Long id) {
-       return userRepository.findById(id);
+    public UserEntity getUserById(@PathVariable Long id) {
+       return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User Not Found with this id:" + id));
     }
 }
