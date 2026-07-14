@@ -23,8 +23,9 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authz ->
             authz.requestMatchers("/api/users/**").authenticated()
                     .requestMatchers("/").permitAll()
+                    .anyRequest().permitAll()
         )
-                .formLogin(form -> form.permitAll());
+                .formLogin(form -> form.permitAll().defaultSuccessUrl("/home"));
 
         return http.build();
     }
