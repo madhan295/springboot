@@ -14,8 +14,9 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http.authorizeHttpRequests(authz ->
             authz.requestMatchers("/api/users/**").authenticated()
-                    .requestMatchers("/home").permitAll()
-        );
+                    .requestMatchers("/").permitAll()
+        )
+                .formLogin(form -> form.permitAll());
 
         return http.build();
     }
