@@ -7,6 +7,7 @@ import com.jvlcode.springbootdemo.exception.ResourceNotFoundException;
 import com.jvlcode.springbootdemo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import com.jvlcode.springbootdemo.model.User;
@@ -19,6 +20,8 @@ public class UserController {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @GetMapping
     public List<UserEntity> getUsers() {
@@ -27,6 +30,7 @@ public class UserController {
 
     @PostMapping
     public UserEntity createUser(@RequestBody UserEntity user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
