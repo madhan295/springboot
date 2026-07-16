@@ -2,6 +2,7 @@ package com.jvlcode.springbootdemo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -21,11 +22,13 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         http.authorizeHttpRequests(authz ->
-            authz.requestMatchers("/api/users/**").authenticated()
-                    .requestMatchers("/").permitAll()
+            authz
+                    .requestMatchers(HttpMethod.POST,"/api/users").permitAll()
+                    .requestMatchers("/api/users/**").authenticated()
                     .anyRequest().permitAll()
         )
-                .formLogin(form -> form.permitAll().defaultSuccessUrl("/home"));
+                .formLogin(form -> form.permitAll().defaultSuccessUrl("/home"))
+                .csrf(csrf -> csrf.disable());
 
         return http.build();
     }
