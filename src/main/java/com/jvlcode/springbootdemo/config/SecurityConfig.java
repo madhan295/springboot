@@ -1,8 +1,10 @@
 package com.jvlcode.springbootdemo.config;
 
+import com.jvlcode.springbootdemo.services.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -34,18 +36,27 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailService(PasswordEncoder passwordEncoder) {
-        UserDetails user = User.withUsername("madhan")
-                .password(passwordEncoder.encode("admin"))
-                .roles("USER")
-                .build();
+    public UserDetailsService userDetailService() {
+//        UserDetails user = User.withUsername("madhan")
+//                .password(passwordEncoder.encode("admin"))
+//                .roles("USER")
+//                .build();
+//
+//        UserDetails admin = User.withUsername("admin")
+//                .password(passwordEncoder.encode("admin"))
+//                .roles("ADMIN")
+//                .build();
+//
+//        return new InMemoryUserDetailsManager(user, admin);
 
-        UserDetails admin = User.withUsername("admin")
-                .password(passwordEncoder.encode("admin"))
-                .roles("ADMIN")
-                .build();
+        return new CustomUserDetailsService();
+    }
 
-        return new InMemoryUserDetailsManager(user, admin);
+    @Bean
+    public DaoAuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailService());
+        authProvider.setPasswordEncoder(passwordEncoder());
+        return authProvider;
     }
 
     @Bean
